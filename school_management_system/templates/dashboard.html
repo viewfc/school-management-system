@@ -1,0 +1,210 @@
+{% extends 'base.html' %}
+{% block title %}Dashboard{% endblock %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-4">
+    <div>
+        <h2 class="fw-bold mb-1">Dashboard</h2>
+        <p class="text-secondary mb-0">Welcome, {{ user['full_name'] }}. Role: {{ user['role']|title }}</p>
+    </div>
+</div>
+
+{% if user['role'] == 'admin' %}
+    <div class="row g-3 mb-4">
+        <div class="col-md-6 col-xl-3">
+            <div class="card stats-card border-0 shadow-sm">
+                <div class="card-body">
+                    <div class="text-secondary small">Total Users</div>
+                    <div class="display-6 fw-bold">{{ stats.total_users }}</div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 col-xl-3">
+            <div class="card stats-card border-0 shadow-sm">
+                <div class="card-body">
+                    <div class="text-secondary small">Students</div>
+                    <div class="display-6 fw-bold">{{ stats.total_students }}</div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 col-xl-3">
+            <div class="card stats-card border-0 shadow-sm">
+                <div class="card-body">
+                    <div class="text-secondary small">Teachers</div>
+                    <div class="display-6 fw-bold">{{ stats.total_teachers }}</div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 col-xl-3">
+            <div class="card stats-card border-0 shadow-sm">
+                <div class="card-body">
+                    <div class="text-secondary small">Classes</div>
+                    <div class="display-6 fw-bold">{{ stats.total_classes }}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-4">
+        <div class="col-lg-6">
+            <div class="card shadow-sm border-0 h-100">
+                <div class="card-body">
+                    <h5 class="fw-bold mb-3">Recent Users</h5>
+                    <div class="table-responsive">
+                        <table class="table align-middle">
+                            <thead><tr><th>Name</th><th>Role</th><th>Email</th></tr></thead>
+                            <tbody>
+                                {% for item in recent_users %}
+                                    <tr>
+                                        <td>{{ item['full_name'] }}</td>
+                                        <td><span class="badge text-bg-light">{{ item['role'] }}</span></td>
+                                        <td>{{ item['email'] }}</td>
+                                    </tr>
+                                {% else %}
+                                    <tr><td colspan="3" class="text-center text-secondary">No users yet.</td></tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="card shadow-sm border-0 h-100">
+                <div class="card-body">
+                    <h5 class="fw-bold mb-3">Recent Classes</h5>
+                    <div class="table-responsive">
+                        <table class="table align-middle">
+                            <thead><tr><th>Class</th><th>Subject</th><th>Teacher</th></tr></thead>
+                            <tbody>
+                                {% for item in recent_classes %}
+                                    <tr>
+                                        <td>{{ item['class_name'] }}</td>
+                                        <td>{{ item['subject_name'] }}</td>
+                                        <td>{{ item['teacher_name'] or '-' }}</td>
+                                    </tr>
+                                {% else %}
+                                    <tr><td colspan="3" class="text-center text-secondary">No classes yet.</td></tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-12">
+            <div class="card shadow-sm border-0">
+                <div class="card-body">
+                    <h5 class="fw-bold mb-3">Latest Announcements</h5>
+                    <div class="row g-3">
+                        {% for item in announcements %}
+                            <div class="col-md-6 col-xl-4">
+                                <div class="announcement-card h-100 p-3 rounded-3 border">
+                                    <h6 class="fw-bold">{{ item['title'] }}</h6>
+                                    <p class="text-secondary small mb-2">{{ item['content'] }}</p>
+                                    <div class="small text-muted">{{ item['created_at'] }}</div>
+                                </div>
+                            </div>
+                        {% else %}
+                            <div class="col-12 text-secondary">No announcements yet.</div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% elif user['role'] == 'teacher' %}
+    <div class="row g-4">
+        <div class="col-lg-7">
+            <div class="card shadow-sm border-0 h-100">
+                <div class="card-body">
+                    <h5 class="fw-bold mb-3">Assigned Classes</h5>
+                    <div class="table-responsive">
+                        <table class="table align-middle">
+                            <thead><tr><th>Class</th><th>Subject</th><th>Room</th><th>Schedule</th></tr></thead>
+                            <tbody>
+                                {% for item in teacher_classes %}
+                                    <tr>
+                                        <td>{{ item['class_name'] }}</td>
+                                        <td>{{ item['subject_name'] }}</td>
+                                        <td>{{ item['room'] or '-' }}</td>
+                                        <td>{{ item['schedule'] or '-' }}</td>
+                                    </tr>
+                                {% else %}
+                                    <tr><td colspan="4" class="text-center text-secondary">No classes assigned yet.</td></tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-5">
+            <div class="card shadow-sm border-0 h-100">
+                <div class="card-body">
+                    <h5 class="fw-bold mb-3">School Announcements</h5>
+                    {% for item in announcements %}
+                        <div class="border rounded-3 p-3 mb-3">
+                            <div class="fw-semibold">{{ item['title'] }}</div>
+                            <div class="small text-secondary mt-1">{{ item['content'] }}</div>
+                        </div>
+                    {% else %}
+                        <div class="text-secondary">No announcements yet.</div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% elif user['role'] == 'student' %}
+    <div class="row g-4">
+        <div class="col-lg-4">
+            <div class="card shadow-sm border-0 h-100">
+                <div class="card-body">
+                    <h5 class="fw-bold mb-3">Student Profile</h5>
+                    <div class="profile-item"><span>Grade</span><strong>{{ student_profile.grade_level }}</strong></div>
+                    <div class="profile-item"><span>Section</span><strong>{{ student_profile.section }}</strong></div>
+                    <div class="profile-item"><span>Phone</span><strong>{{ student_profile.phone }}</strong></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-8">
+            <div class="card shadow-sm border-0 mb-4">
+                <div class="card-body">
+                    <h5 class="fw-bold mb-3">Available Classes</h5>
+                    <div class="table-responsive">
+                        <table class="table align-middle">
+                            <thead><tr><th>Class</th><th>Subject</th><th>Teacher</th><th>Schedule</th></tr></thead>
+                            <tbody>
+                                {% for item in classes %}
+                                    <tr>
+                                        <td>{{ item['class_name'] }}</td>
+                                        <td>{{ item['subject_name'] }}</td>
+                                        <td>{{ item['teacher_name'] or '-' }}</td>
+                                        <td>{{ item['schedule'] or '-' }}</td>
+                                    </tr>
+                                {% else %}
+                                    <tr><td colspan="4" class="text-center text-secondary">No classes available yet.</td></tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="card shadow-sm border-0">
+                <div class="card-body">
+                    <h5 class="fw-bold mb-3">Announcements</h5>
+                    {% for item in announcements %}
+                        <div class="border rounded-3 p-3 mb-3">
+                            <div class="fw-semibold">{{ item['title'] }}</div>
+                            <div class="small text-secondary mt-1">{{ item['content'] }}</div>
+                        </div>
+                    {% else %}
+                        <div class="text-secondary">No announcements yet.</div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endif %}
+{% endblock %}

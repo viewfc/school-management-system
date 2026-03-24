@@ -1,0 +1,49 @@
+body {
+    background: #f5f7fb;
+}
+
+.hero-section {
+    background: linear-gradient(135deg, #ffffff 0%, #eef4ff 100%);
+    border: 1px solid rgba(13, 110, 253, 0.08);
+}
+
+.dashboard-preview,
+.stats-card,
+.announcement-card {
+    background: #ffffff;
+}
+
+.feature-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.feature-list li {
+    padding: 0.75rem 0;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.feature-list li:last-child {
+    border-bottom: 0;
+}
+
+.card {
+    border-radius: 1rem;
+}
+
+.profile-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.85rem 0;
+    border-bottom: 1px solid #eef1f4;
+}
+
+.profile-item:last-child {
+    border-bottom: none;
+}
+
+.table > :not(caption) > * > * {
+    vertical-align: middle;
+}

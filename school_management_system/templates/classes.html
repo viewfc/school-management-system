@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+{% block title %}Manage Classes{% endblock %}
+{% block content %}
+<div class="row g-4">
+    <div class="col-lg-4">
+        <div class="card shadow-sm border-0">
+            <div class="card-body">
+                <h4 class="fw-bold mb-3">Create Class</h4>
+                <form method="post" class="vstack gap-3">
+                    <div>
+                        <label class="form-label">Class name</label>
+                        <input type="text" name="class_name" class="form-control" placeholder="Class 1A" required>
+                    </div>
+                    <div>
+                        <label class="form-label">Subject</label>
+                        <input type="text" name="subject_name" class="form-control" placeholder="Mathematics" required>
+                    </div>
+                    <div>
+                        <label class="form-label">Room</label>
+                        <input type="text" name="room" class="form-control" placeholder="B-204">
+                    </div>
+                    <div>
+                        <label class="form-label">Schedule</label>
+                        <input type="text" name="schedule" class="form-control" placeholder="Mon 09:00-10:30">
+                    </div>
+                    <div>
+                        <label class="form-label">Teacher</label>
+                        <select name="teacher_id" class="form-select">
+                            <option value="">Unassigned</option>
+                            {% for teacher in teachers %}
+                                <option value="{{ teacher['id'] }}">{{ teacher['full_name'] }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <button class="btn btn-primary">Save Class</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-8">
+        <div class="card shadow-sm border-0">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h4 class="fw-bold mb-0">Class List</h4>
+                    <span class="badge text-bg-light">{{ classes|length }} records</span>
+                </div>
+                <div class="table-responsive">
+                    <table class="table align-middle">
+                        <thead>
+                            <tr>
+                                <th>Class</th>
+                                <th>Subject</th>
+                                <th>Teacher</th>
+                                <th>Schedule</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for item in classes %}
+                                <tr>
+                                    <td>
+                                        <div class="fw-semibold">{{ item['class_name'] }}</div>
+                                        <div class="small text-secondary">Room {{ item['room'] or '-' }}</div>
+                                    </td>
+                                    <td>{{ item['subject_name'] }}</td>
+                                    <td>{{ item['teacher_name'] or '-' }}</td>
+                                    <td>{{ item['schedule'] or '-' }}</td>
+                                    <td class="text-end">
+                                        <form method="post" action="{{ url_for('delete_class', class_id=item['id']) }}" onsubmit="return confirm('Delete this class?');">
+                                            <button class="btn btn-sm btn-outline-danger">Delete</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            {% else %}
+                                <tr><td colspan="5" class="text-center text-secondary">No classes found.</td></tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

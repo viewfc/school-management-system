@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% block title %}Manage Announcements{% endblock %}
+{% block content %}
+<div class="row g-4">
+    <div class="col-lg-4">
+        <div class="card shadow-sm border-0">
+            <div class="card-body">
+                <h4 class="fw-bold mb-3">Publish Announcement</h4>
+                <form method="post" class="vstack gap-3">
+                    <div>
+                        <label class="form-label">Title</label>
+                        <input type="text" name="title" class="form-control" required>
+                    </div>
+                    <div>
+                        <label class="form-label">Content</label>
+                        <textarea name="content" rows="6" class="form-control" required></textarea>
+                    </div>
+                    <button class="btn btn-primary">Publish</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-8">
+        <div class="card shadow-sm border-0">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h4 class="fw-bold mb-0">All Announcements</h4>
+                    <span class="badge text-bg-light">{{ announcements|length }} posts</span>
+                </div>
+                {% for item in announcements %}
+                    <div class="border rounded-3 p-3 mb-3">
+                        <div class="d-flex justify-content-between align-items-start gap-3 flex-wrap">
+                            <div>
+                                <h6 class="fw-bold mb-1">{{ item['title'] }}</h6>
+                                <p class="text-secondary mb-2">{{ item['content'] }}</p>
+                                <div class="small text-muted">{{ item['created_at'] }}</div>
+                            </div>
+                            <form method="post" action="{{ url_for('delete_announcement', announcement_id=item['id']) }}" onsubmit="return confirm('Delete this announcement?');">
+                                <button class="btn btn-sm btn-outline-danger">Delete</button>
+                            </form>
+                        </div>
+                    </div>
+                {% else %}
+                    <div class="text-secondary">No announcements yet.</div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

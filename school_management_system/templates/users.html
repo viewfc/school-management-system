@@ -1,0 +1,105 @@
+{% extends 'base.html' %}
+{% block title %}Manage Users{% endblock %}
+{% block content %}
+<div class="row g-4">
+    <div class="col-lg-4">
+        <div class="card shadow-sm border-0">
+            <div class="card-body">
+                <h4 class="fw-bold mb-3">Create User</h4>
+                <form method="post" class="vstack gap-3">
+                    <div>
+                        <label class="form-label">Full name</label>
+                        <input type="text" name="full_name" class="form-control" required>
+                    </div>
+                    <div>
+                        <label class="form-label">Email</label>
+                        <input type="email" name="email" class="form-control" required>
+                    </div>
+                    <div>
+                        <label class="form-label">Password</label>
+                        <input type="password" name="password" class="form-control" required>
+                    </div>
+                    <div>
+                        <label class="form-label">Role</label>
+                        <select name="role" class="form-select" required>
+                            <option value="admin">Admin</option>
+                            <option value="teacher">Teacher</option>
+                            <option value="student">Student</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="form-label">Phone</label>
+                        <input type="text" name="phone" class="form-control">
+                    </div>
+                    <div>
+                        <label class="form-label">Department</label>
+                        <input type="text" name="department" class="form-control" placeholder="For admin/teacher">
+                    </div>
+                    <div>
+                        <label class="form-label">Grade level</label>
+                        <input type="text" name="grade_level" class="form-control" placeholder="For student">
+                    </div>
+                    <div>
+                        <label class="form-label">Section</label>
+                        <input type="text" name="section" class="form-control" placeholder="For student">
+                    </div>
+                    <button class="btn btn-primary">Save User</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-8">
+        <div class="card shadow-sm border-0">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h4 class="fw-bold mb-0">All Users</h4>
+                    <span class="badge text-bg-light">{{ users|length }} records</span>
+                </div>
+                <div class="table-responsive">
+                    <table class="table align-middle">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Role</th>
+                                <th>Email</th>
+                                <th>Extra</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for item in users %}
+                                <tr>
+                                    <td>
+                                        <div class="fw-semibold">{{ item['full_name'] }}</div>
+                                        <div class="small text-secondary">{{ item['phone'] or '-' }}</div>
+                                    </td>
+                                    <td><span class="badge text-bg-light">{{ item['role'] }}</span></td>
+                                    <td>{{ item['email'] }}</td>
+                                    <td>
+                                        {% if item['role'] == 'student' %}
+                                            Grade {{ item['grade_level'] or '-' }} / {{ item['section'] or '-' }}
+                                        {% else %}
+                                            {{ item['department'] or '-' }}
+                                        {% endif %}
+                                    </td>
+                                    <td class="text-end">
+                                        {% if item['id'] != current_user['id'] %}
+                                            <form method="post" action="{{ url_for('delete_user', user_id=item['id']) }}" onsubmit="return confirm('Delete this user?');">
+                                                <button class="btn btn-sm btn-outline-danger">Delete</button>
+                                            </form>
+                                        {% else %}
+                                            <span class="text-secondary small">Current user</span>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                            {% else %}
+                                <tr><td colspan="5" class="text-center text-secondary">No users found.</td></tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

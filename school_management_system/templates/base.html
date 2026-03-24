@@ -1,59 +1,79 @@
 <!DOCTYPE html>
-<html lang="{{ current_lang }}" {% if is_rtl %}dir="rtl"{% endif %}>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}{{ t('brand') }}{% endblock %}</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <title>{% block title %}School Management System{% endblock %}</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f5f7fb;
+            margin: 0;
+            padding: 0;
+        }
+        .navbar {
+            background: #1f2937;
+            color: white;
+            padding: 14px 24px;
+        }
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            margin-right: 16px;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 30px auto;
+            background: white;
+            padding: 24px;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+        }
+        .flash {
+            padding: 10px 14px;
+            margin-bottom: 16px;
+            border-radius: 8px;
+            background: #eef2ff;
+        }
+        input, select, button {
+            padding: 10px;
+            margin: 6px 0;
+            width: 100%;
+            max-width: 360px;
+        }
+        button {
+            background: #2563eb;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 6px;
+        }
+        button:hover {
+            background: #1d4ed8;
+        }
+    </style>
 </head>
 <body>
-    <nav class="navbar">
-        <div class="container nav-wrap">
-            <a href="{{ url_for('dashboard') if current_user else url_for('login') }}" class="brand">
-                <span class="brand-badge">SMS</span>
-                <span>{{ t('brand') }}</span>
-            </a>
-            <div class="nav-actions">
-                <form method="post" action="{{ url_for('set_language') }}" class="lang-form">
-                    <input type="hidden" name="next" value="{{ request.full_path if request.query_string else request.path }}">
-                    <label for="lang" class="lang-label">{{ t('language') }}</label>
-                    <select id="lang" name="lang" class="lang-select" onchange="this.form.submit()">
-                        {% for code, label in languages.items() %}
-                            <option value="{{ code }}" {% if code == current_lang %}selected{% endif %}>{{ label }}</option>
-                        {% endfor %}
-                    </select>
-                </form>
-                {% if current_user %}
-                    <span class="nav-user">{{ current_user['full_name'] }} · {{ role_label(current_user['role']) }}</span>
-                    <a class="btn btn-outline" href="{{ url_for('logout') }}">{{ t('logout') }}</a>
-                {% else %}
-                    <a class="btn btn-outline" href="{{ url_for('login') }}">{{ t('login') }}</a>
-                    <a class="btn btn-primary" href="{{ url_for('register') }}">{{ t('register') }}</a>
-                {% endif %}
-            </div>
-        </div>
-    </nav>
+    <div class="navbar">
+        <a href="/">Home</a>
+        <a href="/login">Login</a>
+        <a href="/register">Register</a>
+        {% if session.get('user_id') %}
+            <a href="/dashboard">Dashboard</a>
+            <a href="/logout">Logout</a>
+        {% endif %}
+    </div>
 
-    <main class="page">
-        <div class="container">
-            {% with messages = get_flashed_messages(with_categories=true) %}
-                {% if messages %}
-                    <div class="alerts">
-                        {% for category, message in messages %}
-                            <div class="alert alert-{{ category }}">{{ message }}</div>
-                        {% endfor %}
-                    </div>
-                {% endif %}
-            {% endwith %}
-            {% block content %}{% endblock %}
-        </div>
-    </main>
+    <div class="container">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="flash">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
 
-    <footer class="footer">
-        <div class="container footer-wrap">
-            <span>© {{ current_year }} {{ t('brand') }}</span>
-            <span>{{ t('footer_note') }}</span>
-        </div>
-    </footer>
+        {% block content %}{% endblock %}
+    </div>
 </body>
 </html>

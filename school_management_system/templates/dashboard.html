@@ -3,6 +3,87 @@
 {% block title %}Dashboard{% endblock %}
 
 {% block content %}
-<h2>Dashboard</h2>
-<p>Welcome, {{ name }}</p>
+<div class="hero">
+    <div class="card">
+        <div class="badge">Dashboard</div>
+        <h1 style="margin-top:16px;">Welcome, {{ name }}</h1>
+        <p class="muted">
+            คุณเข้าสู่ระบบสำเร็จแล้ว ตอนนี้ระบบกำลังเชื่อมกับ PostgreSQL และพร้อมสำหรับต่อยอดฟีเจอร์เพิ่มเติม
+        </p>
+
+        <div class="actions">
+            <a class="btn" href="/dashboard">Refresh</a>
+            <a class="btn btn-secondary" href="/logout">Logout</a>
+        </div>
+    </div>
+
+    <div class="card">
+        <h3>Quick Info</h3>
+        <ul class="list">
+            <li>Application: School Management System</li>
+            <li>Status: Online</li>
+            <li>Database: PostgreSQL</li>
+            <li>Hosting: Render</li>
+        </ul>
+    </div>
+</div>
+
+<div class="stats">
+    <div class="stat-box">
+        <div class="label">System</div>
+        <div class="value">1</div>
+    </div>
+    <div class="stat-box">
+        <div class="label">Logged In User</div>
+        <div class="value">1</div>
+    </div>
+    <div class="stat-box">
+        <div class="label">DB</div>
+        <div class="value">PG</div>
+    </div>
+</div>
+
+<div class="section-grid">
+    <div class="card">
+        <h3>Recent Activity</h3>
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Item</th>
+                        <th>Status</th>
+                        <th>Note</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Login page</td>
+                        <td>OK</td>
+                        <td>เปิดใช้งานแล้ว</td>
+                    </tr>
+                    <tr>
+                        <td>Register page</td>
+                        <td>OK</td>
+                        <td>พร้อมสร้างบัญชีใหม่</td>
+                    </tr>
+                    <tr>
+                        <td>Database</td>
+                        <td>Connected</td>
+                        <td>เชื่อม PostgreSQL สำเร็จ</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="card">
+        <h3>Next Step</h3>
+        <ul class="list">
+            <li>เพิ่ม role: admin / teacher / student</li>
+            <li>เพิ่ม users table fields</li>
+            <li>เพิ่ม classes / announcements</li>
+            <li>เพิ่มหลายภาษาอีกครั้งแบบปลอดภัย</li>
+        </ul>
+    </div>
+</div>
 {% endblock %}

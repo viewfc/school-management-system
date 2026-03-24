@@ -427,8 +427,9 @@ def delete_announcement(announcement_id):
     return redirect(url_for('announcements_page'))
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     init_db()
-    app.run(debug=True)
+    import os
+    app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))
 else:
     init_db()

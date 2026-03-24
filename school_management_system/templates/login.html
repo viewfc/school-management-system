@@ -3,13 +3,47 @@
 {% block title %}Login{% endblock %}
 
 {% block content %}
-<h2>Login</h2>
+<div class="auth-wrap">
+    <div class="auth-grid">
+        <div class="card">
+            <div class="badge">Starter Project</div>
+            <h1 style="margin-top:16px;">School Management System</h1>
+            <p class="muted">
+                ระบบตัวอย่างสำหรับจัดการผู้ใช้ การสมัครสมาชิก การเข้าสู่ระบบ และแดชบอร์ด
+                ที่ต่อยอดไปยังระบบโรงเรียนจริงได้
+            </p>
 
-<form method="POST">
-    <input type="email" name="email" placeholder="Email" required>
-    <input type="password" name="password" placeholder="Password" required>
-    <button type="submit">Login</button>
-</form>
+            <div class="card" style="margin-top:18px; box-shadow:none;">
+                <h3>Included in this build</h3>
+                <ul class="list">
+                    <li>Login / Register</li>
+                    <li>Dashboard</li>
+                    <li>PostgreSQL database</li>
+                    <li>Render deployment</li>
+                </ul>
+            </div>
+        </div>
 
-<p><a href="/register">Register</a></p>
+        <div class="card">
+            <h2>Login</h2>
+            <form method="POST" class="form-grid">
+                <div>
+                    <label for="email">Email</label>
+                    <input id="email" type="email" name="email" placeholder="you@school.com" required>
+                </div>
+
+                <div>
+                    <label for="password">Password</label>
+                    <input id="password" type="password" name="password" placeholder="Password" required>
+                </div>
+
+                <button type="submit">Login</button>
+            </form>
+
+            <div class="footer-note">
+                ยังไม่มีบัญชี? <a href="/register">Register</a>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}

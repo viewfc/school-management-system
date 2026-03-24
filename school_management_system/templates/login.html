@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% block title %}{{ t('login') }} | {{ t('brand') }}{% endblock %}
+{% block content %}
+<div class="auth-grid">
+    <section class="hero-card">
+        <p class="eyebrow">{{ t('hero_title') }}</p>
+        <h1>{{ t('hero_title') }}</h1>
+        <p class="muted">{{ t('hero_desc') }}</p>
+
+        <div class="demo-box">
+            <h3>{{ t('demo_accounts') }}</h3>
+            <ul>
+                <li><strong>{{ t('admin') }}:</strong> admin@school.local / admin123</li>
+                <li><strong>{{ t('teacher') }}:</strong> teacher@school.local / teacher123</li>
+                <li><strong>{{ t('student') }}:</strong> student@school.local / student123</li>
+            </ul>
+        </div>
+    </section>
+
+    <section class="card auth-card">
+        <h2>{{ t('login') }}</h2>
+        <form method="post" class="form-grid">
+            <label>
+                <span>{{ t('email') }}</span>
+                <input type="email" name="email" value="{{ email or '' }}" placeholder="you@school.com" required>
+            </label>
+            <label>
+                <span>{{ t('password') }}</span>
+                <input type="password" name="password" placeholder="••••••••" required>
+            </label>
+            <button type="submit" class="btn btn-primary btn-block">{{ t('login') }}</button>
+        </form>
+        <p class="auth-link">{{ t('no_account') }} <a href="{{ url_for('register') }}">{{ t('register') }}</a></p>
+    </section>
+</div>
+{% endblock %}
